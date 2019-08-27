@@ -3,7 +3,7 @@
       [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
       [mode]="(isHandset$ | async) ? 'over' : 'side'"
       [opened]="(isHandset$ | async) === false">
-    <mat-toolbar>Menu</mat-toolbar>
+    <mat-toolbar color="primary">Menu</mat-toolbar>
     <mat-nav-list>
       <a mat-list-item href="#">Link 1</a>
       <a mat-list-item href="#">Link 2</a>
@@ -27,11 +27,11 @@
         <span class="example-fill-remaining-space"></span>       
         <a routerLink="/dashboard">
           <mat-icon class="icon">input</mat-icon>
-          <span  class="label">Login</span>
+          <span  class="label">&nbsp;Login</span>
          </a>    
         <a routerLink="/dashboard">
             <mat-icon class="icon">home</mat-icon>
-            <span class="label">Home</span>
+            <span class="label">&nbsp;Home</span>
         </a>    
         <a routerLink="/dashboard">
             <mat-icon class="icon">dashboard</mat-icon>
@@ -43,8 +43,7 @@
          </a>
       </mat-toolbar>
     </mat-toolbar>
-    <app-addform></app-addform>
-    <app-tabla></app-tabla>
+   <ng-content></ng-content>
   </mat-sidenav-content>
 
 </mat-sidenav-container>
