@@ -5,12 +5,7 @@ import { Routes, RouterModule } from '@angular/router';
 const routes: Routes = [
   {
     path: 'users',
-    loadChildren: () => import('./modules/user/user.module').then(mod => mod.UserModule)
-  },
-  {
-    path: '',
-    redirectTo: '',
-    pathMatch: 'full'
+    loadChildren: () => import('../../modules/user/user.module').then(mod => mod.UserModule)
   }
 ];
 
@@ -18,4 +13,4 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class MainNavRoutingModule { }
