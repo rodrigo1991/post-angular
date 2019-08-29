@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { UserRoutingModule } from './user-routing.module';
 import { UserComponent } from './user.component';
-import { MatProgressSpinnerModule } from '@angular/material';
+import { MatProgressSpinnerModule, MatTableModule, MatPaginatorModule, MatSortModule, MatCardModule } from '@angular/material';
 import { ProgressSpinnerComponent } from 'src/app/shared/components/progress-spinner/progress-spinner.component';
 
 
@@ -12,7 +12,11 @@ import { ProgressSpinnerComponent } from 'src/app/shared/components/progress-spi
   imports: [
     CommonModule,
     UserRoutingModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
+    MatCardModule
   ]
 })
 export class UserModule { }
