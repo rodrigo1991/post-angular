@@ -1,8 +1,6 @@
-import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import { MainNavRoutingModule } from './main-nav-routing.module';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MainNavComponent } from './main-nav.component';
 import { LayoutModule } from '@angular/cdk/layout';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -18,15 +16,15 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
   declarations: [
     MainNavComponent
   ],
   imports: [
-    BrowserModule,
+    CommonModule,
     MainNavRoutingModule,
-    BrowserAnimationsModule,
     LayoutModule,
     MatToolbarModule,
     MatButtonModule,

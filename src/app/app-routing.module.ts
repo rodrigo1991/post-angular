@@ -4,13 +4,20 @@ import { Routes, RouterModule } from '@angular/router';
 
 const routes: Routes = [
   {
-    path: 'users',
+    path: '',
+    loadChildren: () => import('./core/main-nav/main-nav.module').then(mod => mod.MainNavModule)
+  },
+  {
+    path: 'register',
     loadChildren: () => import('./modules/user/user.module').then(mod => mod.UserModule)
   },
   {
-    path: '',
-    redirectTo: '',
-    pathMatch: 'full'
+    path: 'login',
+    loadChildren: () => import('./modules/user/user.module').then(mod => mod.UserModule)
+  },
+  {
+    path: '**',
+    redirectTo: '/'
   }
 ];
 
