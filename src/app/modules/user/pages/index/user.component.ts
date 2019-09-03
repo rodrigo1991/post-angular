@@ -29,7 +29,7 @@ export class UserComponent implements AfterViewInit, OnInit {
   constructor(private userService: UserService) { }
 
   ngOnInit() {        
-    this.dataSource = new UserDataSource();
+    this.dataSource = new UserDataSource(this.userService);
   }
 
   ngAfterViewInit() {

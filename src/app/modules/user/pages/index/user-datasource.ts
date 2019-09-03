@@ -4,6 +4,7 @@ import { MatSort } from '@angular/material/sort';
 import { map } from 'rxjs/operators';
 import { Observable, of as observableOf, merge } from 'rxjs';
 import { User } from '../../user.model';
+import { UserService } from '../../user.service';
 
 /**
  * Data source for the Tabla view. This class should
@@ -15,7 +16,7 @@ export class UserDataSource extends DataSource<User> {
   paginator: MatPaginator;
   sort: MatSort;
 
-  constructor() {
+  constructor(private userService: UserService) {
     super();
   }
 
@@ -61,7 +62,19 @@ export class UserDataSource extends DataSource<User> {
     if (!this.sort.active || this.sort.direction === '') {
       return data;
     }
+
     console.log('Call api');
+    const order = {}
+    order[this.sort.active] = this.sort.direction.toUpperCase();
+    const options = {
+      where: {},
+      relations: [],
+      order:order
+    }
+    this.userService.getUsers(options).subscribe(
+      users => console.log(users)
+    );
+    
     return data.sort((a, b) => {
       const isAsc = this.sort.direction === 'asc';
       switch (this.sort.active) {
