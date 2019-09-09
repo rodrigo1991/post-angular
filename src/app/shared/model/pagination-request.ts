@@ -3,4 +3,8 @@ export class PaginationRequest {
   limit: string;
   sort: string;
   join: string[];
+
+  constructor(){
+    this.join = []
+  }
 }

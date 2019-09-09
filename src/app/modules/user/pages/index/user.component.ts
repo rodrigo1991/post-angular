@@ -5,6 +5,7 @@ import { MatTable } from '@angular/material/table';
 import { UserDataSource } from './user-datasource';
 import { UserService } from '../../user.service';
 import { User } from '../../user.model';
+import { tap, map, filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-user',
@@ -24,7 +25,7 @@ export class UserComponent implements AfterViewInit, OnInit {
   private dataSource: UserDataSource;
 
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
-  displayedColumns = ['id', 'name', 'surname', 'birthdate'];
+  displayedColumns = ['id', 'name', 'surname', 'birthdate', 'edit', 'delete'];
 
   constructor(private userService: UserService) { }
 
@@ -33,19 +34,27 @@ export class UserComponent implements AfterViewInit, OnInit {
   }
 
   ngAfterViewInit() {
-    this.userService.getUsers()
-    .subscribe(page => {
-      console.log(page);
-      this.dataSource.page = page;
-      this.dataSource.userSubject.next(page.data);
-      this.dataSource.sort = this.sort;
-      this.dataSource.paginator = this.paginator;
-      this.table.dataSource = this.dataSource;
-    });
-
+    this.dataSource.sort = this.sort;
+    this.dataSource.paginator = this.paginator;
+    this.table.dataSource = this.dataSource;
   }
 
   applyFilter(filterValue: string) {
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+    const datos = this.dataSource.page.data;
+    console.log('datos',datos);
+    const filtro = filterValue.trim().toLowerCase();
+    const filtrados = datos.filter(
+      data => data.name.toLowerCase().includes(filtro) || data.surname.toLowerCase().includes(filtro)
+    )
+    this.dataSource.userSubject.next(filtrados);
+    console.log(filtrados);
+  }
+
+  onEditClick(user :User){
+    console.log(user);
+  }
+
+  onDeleteClick(user :User){
+    console.log(user);
   }
 }

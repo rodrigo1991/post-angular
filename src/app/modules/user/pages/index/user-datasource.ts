@@ -2,7 +2,7 @@ import { DataSource } from '@angular/cdk/collections';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { map, tap } from 'rxjs/operators';
-import { Observable, of as observableOf, merge, BehaviorSubject } from 'rxjs';
+import { Observable, of as observableOf, merge, BehaviorSubject, of } from 'rxjs';
 import { User } from '../../user.model';
 import { UserService } from '../../user.service';
 import { PaginationRequest } from 'src/app/shared/model/pagination-request';
@@ -43,6 +43,8 @@ export class UserDataSource extends DataSource<User> {
       tap(() => this.getData())
       )
     .subscribe();
+    //return of(this.page.data);    
+    //return of(this.userSubject.getValue());
     return this.userSubject.asObservable();
   }
 
@@ -50,6 +52,8 @@ export class UserDataSource extends DataSource<User> {
 
   private getData(): void {
     const pr = new PaginationRequest();
+    pr.join.push('group');
+    pr.join.push('posts');
     if (this.sort.active && this.sort.direction !== '') {
       pr.sort = `${this.sort.active},${this.sort.direction.toUpperCase()}`;
     }
@@ -62,5 +66,8 @@ export class UserDataSource extends DataSource<User> {
         this.page = page;
       }
     );
+
+    console.log('userSubject', this.userSubject.getValue());
+    console.log('page', this.page);
   }
 }

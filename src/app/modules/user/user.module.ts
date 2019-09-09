@@ -4,7 +4,9 @@ import { CommonModule } from '@angular/common';
 import { UserRoutingModule } from './user-routing.module';
 import { UserComponent } from './pages/index/user.component';
 import { MatProgressSpinnerModule, MatTableModule, MatPaginatorModule, MatSortModule, MatCardModule,
-  MatFormFieldModule} from '@angular/material';
+  MatFormFieldModule,
+  MatInputModule,
+  MatIconModule} from '@angular/material';
 import { ProgressSpinnerComponent } from 'src/app/shared/components/progress-spinner/progress-spinner.component';
 import { HttpClientModule } from '@angular/common/http';
 import { UserService } from './user.service';
@@ -21,6 +23,8 @@ import { UserService } from './user.service';
     MatSortModule,
     MatCardModule,
     MatFormFieldModule,
+    MatInputModule,
+    MatIconModule,
     HttpClientModule
   ],
   providers: [UserService]
