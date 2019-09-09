@@ -1,10 +1,12 @@
 import { DataSource } from '@angular/cdk/collections';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { map } from 'rxjs/operators';
-import { Observable, of as observableOf, merge } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
+import { Observable, of as observableOf, merge, BehaviorSubject } from 'rxjs';
 import { User } from '../../user.model';
 import { UserService } from '../../user.service';
+import { PaginationRequest } from 'src/app/shared/model/pagination-request';
+import { Page } from 'src/app/shared/model/page';
 
 /**
  * Data source for the Tabla view. This class should
@@ -12,7 +14,8 @@ import { UserService } from '../../user.service';
  * (including sorting, pagination, and filtering).
  */
 export class UserDataSource extends DataSource<User> {
-  data: User[] = [];
+  userSubject = new BehaviorSubject<User[]>([]);
+  page: Page<User> = new Page();
   paginator: MatPaginator;
   sort: MatSort;
 
@@ -29,64 +32,34 @@ export class UserDataSource extends DataSource<User> {
     // Combine everything that affects the rendered data into one update
     // stream for the data-table to consume.
     const dataMutations = [
-      observableOf(this.data),
+      observableOf(this.userSubject),
       this.paginator.page,
       this.sort.sortChange
     ];
 
-    return merge(...dataMutations).pipe(map(() => {
-      return this.getPagedData(this.getSortedData([...this.data]));
-    }));
+
+    merge(...dataMutations).pipe(
+      tap(() => this.getData())
+      )
+    .subscribe();
+    return this.userSubject.asObservable();
   }
 
-  /**
-   *  Called when the table is being destroyed. Use this function, to clean up
-   * any open connections or free any held resources that were set up during connect.
-   */
   disconnect() {}
 
-  /**
-   * Paginate the data (client-side). If you're using server-side pagination,
-   * this would be replaced by requesting the appropriate data from the server.
-   */
-  private getPagedData(data: User[]) {
-    const startIndex = this.paginator.pageIndex * this.paginator.pageSize;
-    return data.splice(startIndex, this.paginator.pageSize);
-  }
-
-  /**
-   * Sort the data (client-side). If you're using server-side sorting,
-   * this would be replaced by requesting the appropriate data from the server.
-   */
-  private getSortedData(data: User[]) {
-    if (!this.sort.active || this.sort.direction === '') {
-      return data;
+  private getData(): void {
+    const pr = new PaginationRequest();
+    if (this.sort.active && this.sort.direction !== '') {
+      pr.sort = `${this.sort.active},${this.sort.direction.toUpperCase()}`;
     }
+    pr.limit = this.paginator.pageSize.toString();
+    pr.page = (this.paginator.pageIndex + 1).toString();
 
-    console.log('Call api');
-    const order = {}
-    order[this.sort.active] = this.sort.direction.toUpperCase();
-    const options = {
-      where: {},
-      relations: [],
-      order:order
-    }
-    this.userService.getUsers(options).subscribe(
-      users => console.log(users)
-    );
-    
-    return data.sort((a, b) => {
-      const isAsc = this.sort.direction === 'asc';
-      switch (this.sort.active) {
-        case 'name': return compare(a.name, b.name, isAsc);
-        case 'id': return compare(+a.id, +b.id, isAsc);
-        default: return 0;
+    this.userService.getUsers(pr).subscribe(
+      page => {
+      this.userSubject.next(page.data);
+      this.page = page;
       }
-    });
+    );
   }
-}
-
-/** Simple sort comparator for example ID/Name columns (for client-side sorting). */
-function compare(a, b, isAsc) {
-  return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
 }

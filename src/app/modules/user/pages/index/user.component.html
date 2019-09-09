@@ -36,10 +36,10 @@
     </table>
   
     <mat-paginator #paginator
-        [length]="dataSource?.data.length"
-        [pageIndex]="0"
-        [pageSize]="50"
-        [pageSizeOptions]="[25, 50, 100, 250]">
+        [length]="dataSource.page.total"
+        [pageIndex]="dataSource.page.page - 1"
+        [pageSize]="dataSource.page.count"
+        [pageSizeOptions]="[1, 2, 3]">
     </mat-paginator>
   </div>
   </mat-card-content>

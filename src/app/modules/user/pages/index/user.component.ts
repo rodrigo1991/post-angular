@@ -12,13 +12,13 @@ import { User } from '../../user.model';
   styleUrls: ['./user.component.scss']
 })
 export class UserComponent implements AfterViewInit, OnInit {
-  @ViewChild(MatPaginator, {static: false}) 
+  @ViewChild(MatPaginator, {static: false})
   private paginator: MatPaginator;
 
-  @ViewChild(MatSort, {static: false}) 
+  @ViewChild(MatSort, {static: false})
   private sort: MatSort;
 
-  @ViewChild(MatTable, {static: false}) 
+  @ViewChild(MatTable, {static: false})
   private table: MatTable<User>;
 
   private dataSource: UserDataSource;
@@ -28,19 +28,20 @@ export class UserComponent implements AfterViewInit, OnInit {
 
   constructor(private userService: UserService) { }
 
-  ngOnInit() {        
+  ngOnInit() {
     this.dataSource = new UserDataSource(this.userService);
   }
 
   ngAfterViewInit() {
     this.userService.getUsers()
-    .subscribe(users => {
-      console.log(users);
-      this.dataSource.data = users;
+    .subscribe(page => {
+      console.log(page);
+      this.dataSource.page = page;
+      this.dataSource.userSubject.next(page.data);
       this.dataSource.sort = this.sort;
       this.dataSource.paginator = this.paginator;
       this.table.dataSource = this.dataSource;
     });
-    
+
   }
 }

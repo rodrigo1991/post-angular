@@ -32,7 +32,7 @@ import { CommonModule } from '@angular/common';
     MatSelectModule,
     MatRadioModule,
     MatCardModule,
-    ReactiveFormsModule   
+    ReactiveFormsModule
   ]
 })
 export class MainNavModule { }
