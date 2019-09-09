@@ -18,6 +18,7 @@ export class UserDataSource extends DataSource<User> {
   page: Page<User> = new Page();
   paginator: MatPaginator;
   sort: MatSort;
+  filter: string;
 
   constructor(private userService: UserService) {
     super();
@@ -57,8 +58,8 @@ export class UserDataSource extends DataSource<User> {
 
     this.userService.getUsers(pr).subscribe(
       page => {
-      this.userSubject.next(page.data);
-      this.page = page;
+        this.userSubject.next(page.data);
+        this.page = page;
       }
     );
   }

@@ -44,4 +44,8 @@ export class UserComponent implements AfterViewInit, OnInit {
     });
 
   }
+
+  applyFilter(filterValue: string) {
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
 }
